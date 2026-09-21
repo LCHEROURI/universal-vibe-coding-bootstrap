@@ -4,6 +4,22 @@ This repository is already a GitHub Template Repository. It contains the safety 
 
 ## Preferred method: create every new app from the template
 
+### No-code automatic method (recommended)
+
+From this template checkout, run:
+
+```bash
+./scripts/create-repo-from-template.sh my-new-app --private
+```
+
+The launcher creates the GitHub repository from this template, verifies
+`AGENTS.md`, `WORKFLOW.md`, `BOOTSTRAP_PROMPT.md`, the verifier, installer, and
+Progressive Distillation skill, then prints the next action. You do not write
+or copy any code.
+
+The launcher requires the GitHub CLI (`gh`) and an authenticated GitHub session.
+It refuses to overwrite an existing repository.
+
 ### Screen 1 — Open the master template
 
 Open `LCHEROURI/universal-vibe-coding-bootstrap` on GitHub. Confirm the page belongs to the intended GitHub owner before continuing.
@@ -40,6 +56,8 @@ The new repository should contain:
 - `NEW_APP_SETUP.md`
 - `README.md`
 - `scripts/install-bootstrap.sh`
+- `scripts/verify-bootstrap.sh`
+- `.github/workflows/bootstrap-check.yml`
 - `skills/progressive-distillation/SKILL.md`
 
 The first agent report must identify the same repository root and remote that you opened on GitHub. If it names another project, stop the agent and open a new thread/workspace from the correct repository.

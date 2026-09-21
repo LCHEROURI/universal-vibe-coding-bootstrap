@@ -11,15 +11,18 @@ This repository is a GitHub Template Repository. Start new projects from it so t
 - `BOOTSTRAP_PROMPT.md` — a session-start prompt for agents that do not automatically discover `AGENTS.md`.
 - `NEW_APP_SETUP.md` — screen-by-screen GitHub template and existing-repository instructions.
 - `scripts/install-bootstrap.sh` — a safe installer for an existing Git repository. It never overwrites existing policy files.
+- `scripts/create-repo-from-template.sh` — a no-code GitHub CLI launcher that creates a new repository from this template and verifies the required files automatically.
+- `scripts/verify-bootstrap.sh` — the CI verifier copied into every new repository; it fails if the universal files or safety markers are missing.
+- `.github/workflows/bootstrap-check.yml` — runs the bootstrap verifier on every pull request and push to `main`.
 - `skills/progressive-distillation/SKILL.md` — a reusable reflection workflow for meaningful failures, discoveries, regressions, architectural decisions, security findings, and patterns.
 
 ## New-project workflow
 
-1. Open this repository on GitHub.
-2. Select **Use this template → Create a new repository**.
-3. Create the new app under the intended owner and visibility.
-4. Open the new repository in your coding environment.
-5. Paste the startup prompt from `BOOTSTRAP_PROMPT.md`.
+1. Run `scripts/create-repo-from-template.sh new-app-name` from this template checkout, or use **Use this template → Create a new repository** on GitHub.
+2. The launcher verifies the new repository received the universal files.
+3. Open the new app repository in your coding environment.
+4. Paste the startup prompt from `BOOTSTRAP_PROMPT.md`.
+5. The new repository's `Universal bootstrap check` runs automatically on its first push/PR.
 6. The first agent report must show the repository root, remote, branch, and worktree before coding begins.
 
 ## Existing repository workflow
@@ -30,7 +33,7 @@ From the root of the target repository, run:
 curl -fsSL https://raw.githubusercontent.com/LCHEROURI/universal-vibe-coding-bootstrap/main/scripts/install-bootstrap.sh | bash
 ```
 
-The installer adds `WORKFLOW.md` and the Progressive Distillation skill. It creates `AGENTS.md` only when one is absent; if a project already has `AGENTS.md`, merge the universal rules manually while preserving stricter project-specific rules.
+The installer adds `WORKFLOW.md`, `scripts/verify-bootstrap.sh`, the bootstrap CI workflow, and the Progressive Distillation skill. It creates `AGENTS.md` only when one is absent; if a project already has `AGENTS.md`, merge the universal rules manually while preserving stricter project-specific rules.
 
 ## Boundary rule
 
