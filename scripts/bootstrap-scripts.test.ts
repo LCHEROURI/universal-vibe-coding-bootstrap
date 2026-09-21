@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it } from "vitest";
 const root = join(import.meta.dirname, "..");
 const verifier = join(root, "scripts/verify-bootstrap.sh");
 const creator = join(root, "scripts/create-repo-from-template.sh");
+const firebaseConfigurator = join(root, "scripts/configure-firebase-app.sh");
 const tempDirs: string[] = [];
 
 function tempDir(prefix: string): string {
@@ -99,6 +100,28 @@ describe("verify-bootstrap.sh", () => {
   });
 });
 
+describe("automatic Firebase setup", () => {
+  it("exposes safe Firebase and OIDC setup controls", () => {
+    const creatorSource = readFileSync(creator, "utf8");
+    const configuratorSource = readFileSync(firebaseConfigurator, "utf8");
+
+    expect(creatorSource).toContain("--firebase-project");
+    expect(creatorSource).toContain("--no-firebase");
+    expect(creatorSource).toContain("configure-firebase-app.sh");
+    expect(configuratorSource).toContain("workload-identity-pools");
+    expect(configuratorSource).toContain("roles/iam.workloadIdentityUser");
+    expect(configuratorSource).toContain("apps.yml");
+    expect(configuratorSource).not.toContain("FIREBASE_SERVICE_ACCOUNT");
+  });
+
+  it("derives a bounded deterministic Firebase project identifier", () => {
+    const creatorSource = readFileSync(creator, "utf8");
+
+    expect(creatorSource).toContain('digest="$(printf');
+    expect(creatorSource).toContain('project_id="${slug:0:23}-$digest"');
+  });
+});
+
 describe("create-repo-from-template.sh", () => {
   it("creates and verifies a private repository with parsed options", () => {
     const cwd = tempDir("bootstrap-create-");
@@ -112,6 +135,7 @@ describe("create-repo-from-template.sh", () => {
       "LCHEROURI",
       "--description",
       "AI assisted app",
+      "--no-firebase",
     ], {
       cwd,
       encoding: "utf8",

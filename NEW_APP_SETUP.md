@@ -12,10 +12,9 @@ From this template checkout, run:
 ./scripts/create-repo-from-template.sh my-new-app --private
 ```
 
-The launcher creates the GitHub repository from this template, verifies
-`AGENTS.md`, `WORKFLOW.md`, `BOOTSTRAP_PROMPT.md`, the verifier, installer, and
-Progressive Distillation skill, then prints the next action. You do not write
-or copy any code.
+The launcher creates the GitHub repository from this template, creates its dedicated Firebase project, configures short lived GitHub OIDC deployment, updates the central app registry, verifies `AGENTS.md`, `WORKFLOW.md`, `BOOTSTRAP_PROMPT.md`, the verifier, installer, and Progressive Distillation skill, then prints the next action. You do not write or copy any code.
+
+Use `--no-firebase` only when the new repository is intentionally not a web application. The automatic Firebase path requires authenticated `gh`, `gcloud`, and Firebase CLI access.
 
 The launcher requires the GitHub CLI (`gh`) and an authenticated GitHub session.
 It refuses to overwrite an existing repository.
@@ -56,7 +55,9 @@ The new repository should contain:
 - `NEW_APP_SETUP.md`
 - `README.md`
 - `scripts/install-bootstrap.sh`
+- `scripts/configure-firebase-app.sh`
 - `scripts/verify-bootstrap.sh`
+
 - `.github/workflows/bootstrap-check.yml`
 - `skills/progressive-distillation/SKILL.md`
 
