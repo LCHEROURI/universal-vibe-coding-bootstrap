@@ -11,7 +11,7 @@ fi
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
 
-mkdir -p skills/progressive-distillation
+mkdir -p scripts skills/progressive-distillation .github/workflows
 
 install_if_absent() {
   local path="$1"
@@ -26,14 +26,22 @@ install_if_absent() {
 
 install_if_absent "AGENTS.md" "$MASTER_RAW/AGENTS.md"
 install_if_absent "WORKFLOW.md" "$MASTER_RAW/WORKFLOW.md"
+install_if_absent "scripts/verify-bootstrap.sh" "$MASTER_RAW/scripts/verify-bootstrap.sh"
+install_if_absent \
+  ".github/workflows/bootstrap-check.yml" \
+  "$MASTER_RAW/.github/workflows/bootstrap-check.yml"
 install_if_absent \
   "skills/progressive-distillation/SKILL.md" \
   "$MASTER_RAW/skills/progressive-distillation/SKILL.md"
+
+chmod +x scripts/verify-bootstrap.sh
 
 echo
 echo "Bootstrap verification (repository root: $ROOT):"
 [ -f AGENTS.md ] && echo "✓ AGENTS.md present"
 [ -f WORKFLOW.md ] && echo "✓ WORKFLOW.md present"
+[ -f scripts/verify-bootstrap.sh ] && echo "✓ scripts/verify-bootstrap.sh present"
+[ -f .github/workflows/bootstrap-check.yml ] && echo "✓ .github/workflows/bootstrap-check.yml present"
 [ -f skills/progressive-distillation/SKILL.md ] && \
   echo "✓ skills/progressive-distillation/SKILL.md present"
 
