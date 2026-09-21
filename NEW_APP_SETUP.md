@@ -1,53 +1,81 @@
 # New App Setup — Screen by Screen
 
-Use this master repository as the starting point for every new app.
+This repository is already a GitHub Template Repository. It contains the safety constitution that prevents agents from mixing directories or silently acting on the wrong app.
 
-## Preferred method: GitHub Template Repository
+## Preferred method: create every new app from the template
 
-One-time GitHub setting:
+### Screen 1 — Open the master template
 
-1. Open `LCHEROURI/universal-vibe-coding-bootstrap` on GitHub.
-2. Click **Settings**.
-3. Stay on **General**.
-4. Scroll to the **Template repository** option.
-5. Turn on **Template repository**.
+Open `LCHEROURI/universal-vibe-coding-bootstrap` on GitHub. Confirm the page belongs to the intended GitHub owner before continuing.
 
-After that, for every new app:
+### Screen 2 — Create from the template
 
-1. Open `LCHEROURI/universal-vibe-coding-bootstrap`.
-2. Click **Use this template**.
-3. Click **Create a new repository**.
-4. Enter the new app repository name.
-5. Choose Public or Private.
-6. Click **Create repository**.
-7. Open that new repository in Freebuff, Codex, Lovable, Replit, or your coding environment.
-8. Tell the coding agent: `Read AGENTS.md before doing anything else.`
+Click:
 
-The new repository will begin with:
+**Use this template → Create a new repository**
+
+### Screen 3 — Name and visibility
+
+Enter the new application repository name. Choose the intended owner and Public or Private visibility. Do not create the app under a different owner by accident.
+
+### Screen 4 — Open the new repository
+
+Open the new repository in Freebuff, Codex, Claude Code, Cursor, Gemini, Lovable, Replit, or another coding environment.
+
+### Screen 5 — Start the agent safely
+
+Paste the contents of `BOOTSTRAP_PROMPT.md`, or say:
+
+```text
+Read the root AGENTS.md and WORKFLOW.md before doing anything else. Verify the absolute Git root, remote owner/name, branch, HEAD, and status. Report the repository identity and plan. Do not work outside this repository or perform commit, push, PR, merge, deployment, production, or external-service changes without explicit authorization.
+```
+
+### Screen 6 — Confirm the starting files
+
+The new repository should contain:
+
 - `AGENTS.md`
+- `WORKFLOW.md`
+- `BOOTSTRAP_PROMPT.md`
+- `NEW_APP_SETUP.md`
+- `README.md`
+- `scripts/install-bootstrap.sh`
 - `skills/progressive-distillation/SKILL.md`
-- the bootstrap documentation and installer
+
+The first agent report must identify the same repository root and remote that you opened on GitHub. If it names another project, stop the agent and open a new thread/workspace from the correct repository.
 
 ## Existing repository method
 
-If an app repository already exists and was not created from the template, use either method below.
-
-### Agent method
-Paste the contents of `BOOTSTRAP_PROMPT.md` as the first instruction to the coding agent.
-
-### Terminal method
-From the target repository root, run:
+From the **root of the target repository**, run:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/LCHEROURI/universal-vibe-coding-bootstrap/main/scripts/install-bootstrap.sh | bash
 ```
 
-The installer does not overwrite an existing `AGENTS.md` or Progressive Distillation skill. Existing files must be merged carefully so stricter project-specific rules are preserved.
+The installer:
 
-## Mandatory rule
-No meaningful coding should begin until:
+- verifies it is run inside a Git repository;
+- installs `WORKFLOW.md` if absent;
+- installs the Progressive Distillation skill if absent;
+- creates `AGENTS.md` only if absent;
+- never overwrites existing policy files.
 
-- the correct repository is confirmed,
-- the active branch is confirmed,
-- `AGENTS.md` exists and has been read,
-- `skills/progressive-distillation/SKILL.md` exists and is available.
+If `AGENTS.md` already exists, merge the universal repository-lock and authorization rules manually or ask an agent to perform a diff-reviewed merge. Preserve stricter project-specific rules and do not blindly overwrite the file.
+
+## Before any GitHub or deployment action
+
+The agent must re-check:
+
+```bash
+git rev-parse --show-toplevel
+git remote -v
+git branch --show-current
+git log -1 --oneline
+git status --short
+```
+
+Then confirm the target repository, branch, source revision, environment, and explicit authorization. A merge does not authorize deployment; a push does not authorize a PR; a PR does not authorize a merge.
+
+## Boundary rule
+
+Never trust a folder name, app title, preview URL, cloud project, or previous conversation as repository identity. The verified Git root and remote are authoritative. If anything conflicts, stop and report it.
