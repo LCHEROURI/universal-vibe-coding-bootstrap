@@ -76,13 +76,15 @@ jobs:
           workload_identity_provider: ${{ inputs.workload-identity-provider }}
           service_account: ${{ inputs.firebase-service-account }}
       - name: Deploy Firebase preview channel
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          projectId: ${{ inputs.firebase-project }}
-          target: ${{ inputs.firebase-target }}
-          channelId: pr-${{ github.event.pull_request.number }}
-          expires: 7d
+        env:
+          FIREBASE_PROJECT: ${{ inputs.firebase-project }}
+          FIREBASE_TARGET: ${{ inputs.firebase-target }}
+        run: |
+          if [ -n "$FIREBASE_TARGET" ]; then
+            npx -y firebase-tools@latest hosting:channel:deploy "pr-${{ github.event.pull_request.number }}" --only "$FIREBASE_TARGET" --expires 7d --project "$FIREBASE_PROJECT" --json
+          else
+            npx -y firebase-tools@latest hosting:channel:deploy "pr-${{ github.event.pull_request.number }}" --expires 7d --project "$FIREBASE_PROJECT" --json
+          fi
 
   production:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -108,8 +110,12 @@ jobs:
           workload_identity_provider: ${{ inputs.workload-identity-provider }}
           service_account: ${{ inputs.firebase-service-account }}
       - name: Deploy Firebase live channel
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          projectId: ${{ inputs.firebase-project }}
-          target: ${{ inputs.firebase-target }}
-          channelId: live
+        env:
+          FIREBASE_PROJECT: ${{ inputs.firebase-project }}
+          FIREBASE_TARGET: ${{ inputs.firebase-target }}
+        run: |
+          if [ -n "$FIREBASE_TARGET" ]; then
+            npx -y firebase-tools@latest hosting:channel:deploy live --only "$FIREBASE_TARGET" --project "$FIREBASE_PROJECT" --json
+          else
+            npx -y firebase-tools@latest hosting:channel:deploy live --project "$FIREBASE_PROJECT" --json
+          fi
