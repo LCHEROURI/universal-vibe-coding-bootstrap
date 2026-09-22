@@ -129,13 +129,13 @@ jobs:
         with:
           workload_identity_provider: ${{ inputs.workload-identity-provider }}
           service_account: ${{ inputs.firebase-service-account }}
-      - name: Deploy Firebase live channel
+      - name: Deploy Firebase live site
         env:
           FIREBASE_PROJECT: ${{ inputs.firebase-project }}
           FIREBASE_TARGET: ${{ inputs.firebase-target }}
         run: |
           if [ -n "$FIREBASE_TARGET" ]; then
-            npx -y firebase-tools@latest hosting:channel:deploy live --only "$FIREBASE_TARGET" --project "$FIREBASE_PROJECT" --json
+            npx -y firebase-tools@latest deploy --only "hosting:$FIREBASE_TARGET" --project "$FIREBASE_PROJECT" --json
           else
-            npx -y firebase-tools@latest hosting:channel:deploy live --project "$FIREBASE_PROJECT" --json
+            npx -y firebase-tools@latest deploy --only hosting --project "$FIREBASE_PROJECT" --json
           fi
