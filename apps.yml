@@ -38,3 +38,10 @@ apps:
     firebase_target: null
     production_url: https://restaurant-social-lcherouri.web.app
     preview_url_pattern: https://restaurant-social-lcherouri--pr-{number}-*.web.app
+  - repo: LCHEROURI/test-freebuff
+    status: active
+    platform: firebase-hosting
+    firebase_project: test-freebuff-14e73e
+    firebase_target: null
+    production_url: https://test-freebuff-14e73e.web.app
+    preview_url_pattern: https://test-freebuff-14e73e--pr-{number}-*.web.app
