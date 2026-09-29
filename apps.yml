@@ -45,3 +45,11 @@ apps:
     firebase_target: null
     production_url: https://test-freebuff-14e73e.web.app
     preview_url_pattern: https://test-freebuff-14e73e--pr-{number}-*.web.app
+
+  - repo: LCHEROURI/gym-progress-ai
+    status: active
+    platform: firebase-hosting
+    firebase_project: gym-progress-ai-lcherouri
+    firebase_target: null
+    production_url: https://gym-progress-ai-lcherouri.web.app
+    preview_url_pattern: https://gym-progress-ai-lcherouri--pr-{number}-*.web.app
